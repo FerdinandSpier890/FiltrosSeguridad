@@ -1,0 +1,190 @@
+﻿@model Filtros_y_Seguridad.Models.Cursos
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create</h2>
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/starrr.js"></script>
+<link href="~/Content/starrr.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link href="https://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
+<script>
+    let ranking = 0;
+
+    const guardarCurso = () => {
+        var requestData = {
+            Nombre: $('#name').val(),
+            Descripcion: $('#description').val(),
+            Precio: $('#price').val(),
+            ImgURL: $('#imgURL').val(),
+            Ranking: ranking,
+            CategoriaId: $('#categoriaid').val(),
+            StatusId: $('#statusid').val(),
+            AutorId: $('#autorid').val()
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "https://localhost:44347/Cursos/Create",
+            data: requestData,
+            success: function (data) {
+                Swal.fire({
+                    title: 'Curso Guardado',
+                    text: 'El Curso se Guardo Correctamente',
+                    icon: 'success'
+                });
+                setTimeout(() => {
+                    window.location.href = "https://localhost:44347/Cursos/Index";
+                }, 3000);
+            },
+            error: function (error) {
+                Swal.fire(error)
+            }
+        });
+
+    }
+</script>
+
+<div class="page-content">
+    <div class="container-fluid">
+        <header class="section-header">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>Nuevo Curso</h3>
+                        <ol class="breadcrumb breadcrumb-simple">
+                            <li><a href="https://localhost:44347/Cursos/Index">Inicio</a></li> |
+                            <li class="active">Nuevo Curso</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="container mt-5">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Ingresar Información del Curso</h5>
+                    <form>
+                        <div class="form-group">
+                            <label for="name">Nombre del Curso</label>
+                            <input type="text" class="form-control" id="name" placeholder="Nombre del Curso">
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Descripción del Curso</label>
+                            <input type="text" class="form-control" id="description" placeholder="Descripción del Curso">
+                        </div>
+                        <div class="form-group">
+                            <label for="price">Precio del Curso</label>
+                            <input type="number" class="form-control" id="price">
+                        </div>
+                        <div class="form-group">
+                            <label for="imgURL">Imagen del Curso</label>
+                            <input type="text" class="form-control" id="imgURL" placeholder="URL de Imagen">
+                        </div>
+                        <div class="form-group">
+                            <label for="categoriaid">Categoria</label>
+                            <select class="form-control" id="categoriaid">
+                                @foreach (var categorias in ViewBag.Categorias)
+                                {
+                                    <option value="@categorias.Id">@categorias.Nombre</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="statusid">Status</label>
+                            <select class="form-control" id="statusid">
+                                @foreach (var status in ViewBag.Status)
+                                {
+                                    <option value="@status.Id">@status.Nombre</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="autorid">Autor</label>
+                            <select class="form-control" id="autorid">
+                                @foreach (var autor in ViewBag.Autor)
+                                {
+                                    <option value="@autor.Id">@autor.Nombre</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="estrellas">Calificación del Curso</label>
+                            <div id="estrellas"></div>
+                        </div>
+                        <button type="submit" onclick="guardarCurso()" class="fa-solid fa-floppy-disk btn btn-rounded btn-inline" style="background-color: #146B63; color: white">Guardar</button>
+                        @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary" })
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+}
+
+<script>
+
+    $('#estrellas').starrr({
+        change: function (e, valor) {
+            ranking = valor;
+
+        }
+
+    });
+    $(document).ready(function () {
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("Index", "Categorias")',
+            dataType: 'json',
+            success: function (data) {
+                var options = '';
+                for (var i = 0; i < data.length; i++) {
+                    options += '<option value="' + data[i].Id + '">' + data[i].Nombre + '</option>';
+                }
+                $('#categoriaid').append(options);
+            }
+        });
+
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("Index", "Status")',
+            dataType: 'json',
+            success: function (data) {
+                var options = '';
+                for (var i = 0; i < data.length; i++) {
+                    options += '<option value="' + data[i].Id + '">' + data[i].Nombre + '</option>';
+                }
+                $('#statusid').append(options);
+            }
+        });
+
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("Index", "Persona")',
+            dataType: 'json',
+            success: function (data) {
+                var options = '';
+                for (var i = 0; i < data.length; i++) {
+                    options += '<option value="' + data[i].Id + '">' + data[i].Nombre + '</option>';
+                }
+                $('#autorid').append(options);
+            }
+        });
+    });
+</script>

@@ -1,0 +1,543 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="FiltroSeguridadModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Categorias">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="150" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="400" />
+        </EntityType>
+        <EntityType Name="Cursos">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="400" Nullable="false" />
+          <Property Name="Precio" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="ImgUrl" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Ranking" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="CategoriaId" Type="int" Nullable="false" />
+          <Property Name="StatusId" Type="int" Nullable="false" />
+          <Property Name="AutorId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Persona">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="150" />
+          <Property Name="Apellidos" Type="varchar" MaxLength="150" />
+          <Property Name="FechaNacimineto" Type="datetime" />
+          <Property Name="Email" Type="varchar" MaxLength="150" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="150" />
+          <Property Name="StatusId" Type="int" Nullable="false" />
+          <Property Name="UsuarioId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="150" />
+        </EntityType>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="150" />
+          <Property Name="Descipcion" Type="varchar" MaxLength="400" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NombreUsuario" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UsuariosInscritos">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PersonaId" Type="int" Nullable="false" />
+          <Property Name="CursosId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Cursos__AutorId__44FF419A">
+          <End Role="Persona" Type="Self.Persona" Multiplicity="1" />
+          <End Role="Cursos" Type="Self.Cursos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persona">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Cursos">
+              <PropertyRef Name="AutorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cursos__Categori__3B75D760">
+          <End Role="Categorias" Type="Self.Categorias" Multiplicity="1" />
+          <End Role="Cursos" Type="Self.Cursos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categorias">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Cursos">
+              <PropertyRef Name="CategoriaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cursos__StatusId__3C69FB99">
+          <End Role="Status" Type="Self.Status" Multiplicity="1" />
+          <End Role="Cursos" Type="Self.Cursos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Cursos">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Persona__StatusI__3F466844">
+          <End Role="Status" Type="Self.Status" Multiplicity="1" />
+          <End Role="Persona" Type="Self.Persona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Persona">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Persona__Usuario__403A8C7D">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Persona" Type="Self.Persona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Persona">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Usuario__RoleId__276EDEB3">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UsuariosI__Curso__440B1D61">
+          <End Role="Cursos" Type="Self.Cursos" Multiplicity="1" />
+          <End Role="UsuariosInscritos" Type="Self.UsuariosInscritos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cursos">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UsuariosInscritos">
+              <PropertyRef Name="CursosId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UsuariosI__Perso__4316F928">
+          <End Role="Persona" Type="Self.Persona" Multiplicity="1" />
+          <End Role="UsuariosInscritos" Type="Self.UsuariosInscritos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persona">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UsuariosInscritos">
+              <PropertyRef Name="PersonaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FiltroSeguridadModelStoreContainer">
+          <EntitySet Name="Categorias" EntityType="Self.Categorias" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cursos" EntityType="Self.Cursos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Persona" EntityType="Self.Persona" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UsuariosInscritos" EntityType="Self.UsuariosInscritos" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Cursos__AutorId__44FF419A" Association="Self.FK__Cursos__AutorId__44FF419A">
+            <End Role="Persona" EntitySet="Persona" />
+            <End Role="Cursos" EntitySet="Cursos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cursos__Categori__3B75D760" Association="Self.FK__Cursos__Categori__3B75D760">
+            <End Role="Categorias" EntitySet="Categorias" />
+            <End Role="Cursos" EntitySet="Cursos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cursos__StatusId__3C69FB99" Association="Self.FK__Cursos__StatusId__3C69FB99">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="Cursos" EntitySet="Cursos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Persona__StatusI__3F466844" Association="Self.FK__Persona__StatusI__3F466844">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="Persona" EntitySet="Persona" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Persona__Usuario__403A8C7D" Association="Self.FK__Persona__Usuario__403A8C7D">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Persona" EntitySet="Persona" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Usuario__RoleId__276EDEB3" Association="Self.FK__Usuario__RoleId__276EDEB3">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="Usuario" EntitySet="Usuario" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UsuariosI__Curso__440B1D61" Association="Self.FK__UsuariosI__Curso__440B1D61">
+            <End Role="Cursos" EntitySet="Cursos" />
+            <End Role="UsuariosInscritos" EntitySet="UsuariosInscritos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UsuariosI__Perso__4316F928" Association="Self.FK__UsuariosI__Perso__4316F928">
+            <End Role="Persona" EntitySet="Persona" />
+            <End Role="UsuariosInscritos" EntitySet="UsuariosInscritos" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FiltroSeguridadModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Categorias">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="400" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Cursos" Relationship="Self.FK__Cursos__Categori__3B75D760" FromRole="Categorias" ToRole="Cursos" />
+        </EntityType>
+        <EntityType Name="Cursos">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="400" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Precio" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="ImgUrl" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Ranking" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="CategoriaId" Type="Int32" Nullable="false" />
+          <Property Name="StatusId" Type="Int32" Nullable="false" />
+          <Property Name="AutorId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Categorias" Relationship="Self.FK__Cursos__Categori__3B75D760" FromRole="Cursos" ToRole="Categorias" />
+          <NavigationProperty Name="Persona" Relationship="Self.FK__Cursos__AutorId__44FF419A" FromRole="Cursos" ToRole="Persona" />
+          <NavigationProperty Name="Status" Relationship="Self.FK__Cursos__StatusId__3C69FB99" FromRole="Cursos" ToRole="Status" />
+          <NavigationProperty Name="UsuariosInscritos" Relationship="Self.FK__UsuariosI__Curso__440B1D61" FromRole="Cursos" ToRole="UsuariosInscritos" />
+        </EntityType>
+        <EntityType Name="Persona">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Apellidos" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="FechaNacimineto" Type="DateTime" Precision="3" />
+          <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="StatusId" Type="Int32" Nullable="false" />
+          <Property Name="UsuarioId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Cursos" Relationship="Self.FK__Cursos__AutorId__44FF419A" FromRole="Persona" ToRole="Cursos" />
+          <NavigationProperty Name="Status" Relationship="Self.FK__Persona__StatusI__3F466844" FromRole="Persona" ToRole="Status" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK__Persona__Usuario__403A8C7D" FromRole="Persona" ToRole="Usuario" />
+          <NavigationProperty Name="UsuariosInscritos" Relationship="Self.FK__UsuariosI__Perso__4316F928" FromRole="Persona" ToRole="UsuariosInscritos" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK__Usuario__RoleId__276EDEB3" FromRole="Role" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Descipcion" Type="String" MaxLength="400" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Cursos" Relationship="Self.FK__Cursos__StatusId__3C69FB99" FromRole="Status" ToRole="Cursos" />
+          <NavigationProperty Name="Persona" Relationship="Self.FK__Persona__StatusI__3F466844" FromRole="Status" ToRole="Persona" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NombreUsuario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RoleId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Persona" Relationship="Self.FK__Persona__Usuario__403A8C7D" FromRole="Usuario" ToRole="Persona" />
+          <NavigationProperty Name="Role" Relationship="Self.FK__Usuario__RoleId__276EDEB3" FromRole="Usuario" ToRole="Role" />
+        </EntityType>
+        <EntityType Name="UsuariosInscritos">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PersonaId" Type="Int32" Nullable="false" />
+          <Property Name="CursosId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Cursos" Relationship="Self.FK__UsuariosI__Curso__440B1D61" FromRole="UsuariosInscritos" ToRole="Cursos" />
+          <NavigationProperty Name="Persona" Relationship="Self.FK__UsuariosI__Perso__4316F928" FromRole="UsuariosInscritos" ToRole="Persona" />
+        </EntityType>
+        <Association Name="FK__Cursos__Categori__3B75D760">
+          <End Role="Categorias" Type="Self.Categorias" Multiplicity="1" />
+          <End Role="Cursos" Type="Self.Cursos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categorias">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Cursos">
+              <PropertyRef Name="CategoriaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cursos__AutorId__44FF419A">
+          <End Role="Persona" Type="Self.Persona" Multiplicity="1" />
+          <End Role="Cursos" Type="Self.Cursos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persona">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Cursos">
+              <PropertyRef Name="AutorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cursos__StatusId__3C69FB99">
+          <End Role="Status" Type="Self.Status" Multiplicity="1" />
+          <End Role="Cursos" Type="Self.Cursos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Cursos">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UsuariosI__Curso__440B1D61">
+          <End Role="Cursos" Type="Self.Cursos" Multiplicity="1" />
+          <End Role="UsuariosInscritos" Type="Self.UsuariosInscritos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cursos">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UsuariosInscritos">
+              <PropertyRef Name="CursosId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Persona__StatusI__3F466844">
+          <End Role="Status" Type="Self.Status" Multiplicity="1" />
+          <End Role="Persona" Type="Self.Persona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Persona">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Persona__Usuario__403A8C7D">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Persona" Type="Self.Persona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Persona">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UsuariosI__Perso__4316F928">
+          <End Role="Persona" Type="Self.Persona" Multiplicity="1" />
+          <End Role="UsuariosInscritos" Type="Self.UsuariosInscritos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persona">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UsuariosInscritos">
+              <PropertyRef Name="PersonaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Usuario__RoleId__276EDEB3">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FiltroSeguridadEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Categorias" EntityType="Self.Categorias" />
+          <EntitySet Name="Cursos" EntityType="Self.Cursos" />
+          <EntitySet Name="Persona" EntityType="Self.Persona" />
+          <EntitySet Name="Role" EntityType="Self.Role" />
+          <EntitySet Name="Status" EntityType="Self.Status" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" />
+          <EntitySet Name="UsuariosInscritos" EntityType="Self.UsuariosInscritos" />
+          <AssociationSet Name="FK__Cursos__Categori__3B75D760" Association="Self.FK__Cursos__Categori__3B75D760">
+            <End Role="Categorias" EntitySet="Categorias" />
+            <End Role="Cursos" EntitySet="Cursos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cursos__AutorId__44FF419A" Association="Self.FK__Cursos__AutorId__44FF419A">
+            <End Role="Persona" EntitySet="Persona" />
+            <End Role="Cursos" EntitySet="Cursos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cursos__StatusId__3C69FB99" Association="Self.FK__Cursos__StatusId__3C69FB99">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="Cursos" EntitySet="Cursos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UsuariosI__Curso__440B1D61" Association="Self.FK__UsuariosI__Curso__440B1D61">
+            <End Role="Cursos" EntitySet="Cursos" />
+            <End Role="UsuariosInscritos" EntitySet="UsuariosInscritos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Persona__StatusI__3F466844" Association="Self.FK__Persona__StatusI__3F466844">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="Persona" EntitySet="Persona" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Persona__Usuario__403A8C7D" Association="Self.FK__Persona__Usuario__403A8C7D">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Persona" EntitySet="Persona" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UsuariosI__Perso__4316F928" Association="Self.FK__UsuariosI__Perso__4316F928">
+            <End Role="Persona" EntitySet="Persona" />
+            <End Role="UsuariosInscritos" EntitySet="UsuariosInscritos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Usuario__RoleId__276EDEB3" Association="Self.FK__Usuario__RoleId__276EDEB3">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="Usuario" EntitySet="Usuario" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FiltroSeguridadModelStoreContainer" CdmEntityContainer="FiltroSeguridadEntities1">
+          <EntitySetMapping Name="Categorias">
+            <EntityTypeMapping TypeName="FiltroSeguridadModel.Categorias">
+              <MappingFragment StoreEntitySet="Categorias">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cursos">
+            <EntityTypeMapping TypeName="FiltroSeguridadModel.Cursos">
+              <MappingFragment StoreEntitySet="Cursos">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+                <ScalarProperty Name="ImgUrl" ColumnName="ImgUrl" />
+                <ScalarProperty Name="Ranking" ColumnName="Ranking" />
+                <ScalarProperty Name="CategoriaId" ColumnName="CategoriaId" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="AutorId" ColumnName="AutorId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Persona">
+            <EntityTypeMapping TypeName="FiltroSeguridadModel.Persona">
+              <MappingFragment StoreEntitySet="Persona">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
+                <ScalarProperty Name="FechaNacimineto" ColumnName="FechaNacimineto" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Role">
+            <EntityTypeMapping TypeName="FiltroSeguridadModel.Role">
+              <MappingFragment StoreEntitySet="Role">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Status">
+            <EntityTypeMapping TypeName="FiltroSeguridadModel.Status">
+              <MappingFragment StoreEntitySet="Status">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Descipcion" ColumnName="Descipcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuario">
+            <EntityTypeMapping TypeName="FiltroSeguridadModel.Usuario">
+              <MappingFragment StoreEntitySet="Usuario">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="NombreUsuario" ColumnName="NombreUsuario" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UsuariosInscritos">
+            <EntityTypeMapping TypeName="FiltroSeguridadModel.UsuariosInscritos">
+              <MappingFragment StoreEntitySet="UsuariosInscritos">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PersonaId" ColumnName="PersonaId" />
+                <ScalarProperty Name="CursosId" ColumnName="CursosId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

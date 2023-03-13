@@ -1,0 +1,145 @@
+﻿@model Filtros_y_Seguridad.Models.Cursos
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit</h2>
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/starrr.js"></script>
+<link href="~/Content/starrr.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link href="https://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<script>
+    let ranking = 0;
+    const editarCurso = () => {
+        var requestData = {
+            Id: parseInt($('#id').val()),
+            Nombre: $('#name').val(),
+            Descripcion: $('#description').val(),
+            Precio: parseFloat($('#price').val()),
+            ImgURL: $('#imgURL').val(),
+            Ranking: ranking,
+            CategoriaId: parseInt($('#categoryId').val()),
+            StatusId: parseInt($('#statusId').val()),
+            AutorId: parseInt($('#autorId').val())
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "https://localhost:44347/Cursos/Edit",
+            data: requestData,
+            success: function (data) {
+                Swal.fire({
+                    title: 'Curso Editado',
+                    text: 'El Curso se Editó Correctramente',
+                    icon: 'success'
+                });
+                setTimeout(() => {
+                    window.location.href = "https://localhost:44347//Cursos/Index";
+                }, 3000);
+            },
+            error: () => {
+                Swal.fire({
+                    title: '¡Error!',
+                    text: 'Error en el servidor, lamentamos el inconveniente',
+                    icon: 'error',
+                    confirmButtonText: 'Cool'
+                })
+            }
+        });
+
+    }
+</script>
+<div class="page-content">
+    <div class="container-fluid">
+        <header class="section-header">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>Editar Curso</h3>
+                        <ol class="breadcrumb breadcrumb-simple">
+                            <li><a href="https://localhost:44347/Cursos/Index">Inicio</a></li> |
+                            <li class="active">Editar Curso</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title border-bottom pb-3">Editar Información del Curso</h5>
+                            <form>
+                                <div class="form-group mt-4">
+                                    <label for="id">Id</label>
+                                    <input value="@Model.Id" type="text" id="id" class="form-control" disabled />
+                                </div>
+                                <div class="form-group mt-4">
+                                    <label for="name">Nombre</label>
+                                    <input value="@Model.Nombre" type="text" id="name" class="form-control" placeholder="Escribe el nombre del curso aquí" />
+                                </div>
+                                <div class="form-group mt-4">
+                                    <label for="description">Descripción</label>
+                                    <input value="@Model.Descripcion" type="text" id="description" class="form-control" placeholder="Escribe la descripción del curso aquí" />
+                                </div>
+                                <div class="form-group mt-4">
+                                    <label for="price">Precio</label>
+                                    <input value="@Model.Precio" type="number" id="price" class="form-control" />
+                                </div>
+                                <div class="form-group mt-4">
+                                    <label for="imgURL">URL de Imagen</label>
+                                    <input value="@Model.ImgUrl" type="text" id="imgURL" class="form-control" placeholder="Escribe la url de imagen del curso aquí" />
+                                </div>
+                                <div class="form-group mt-4">
+                                    <label for="ranking">Calificación</label>
+                                    <div id="ranking"></div>
+                                </div>
+                                <div class="form-group mt-4">
+                                    <label for="autorId">Id de Autor</label>
+                                    <input value="@Model.AutorId" type="number" id="autorId" class="form-control" />
+                                </div>
+                                <div class="form-group mt-4">
+                                    <label for="categoryId">Id de Categoría</label>
+                                    <input value="@Model.CategoriaId" type="number" id="categoryId" class="form-control" />
+                                </div>
+                                <div class="form-group mt-4">
+                                    <label for="statusId">Id de Status</label>
+                                    <input value="@Model.StatusId" type="number" id="statusId" class="form-control" />
+                                </div>
+                                <button type="submit" onclick="editarCurso()" class="fa-solid fa-floppy-disk btn btn-rounded btn-inline" style="background-color: #146B63; color: white">Guardar</button>
+                                @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary" })
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+        $('#ranking').starrr({
+            rating: @Model.Ranking,
+            change: (ev, value) => {
+                ranking = value;
+            }
+        });
+</script>

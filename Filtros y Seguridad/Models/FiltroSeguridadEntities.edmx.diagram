@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="1bf25f122b59416fa4cc1b111d2552a4" Name="Diagram1">
+        <EntityTypeShape EntityType="FiltroSeguridadModel.Categorias" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FiltroSeguridadModel.Cursos" Width="1.5" PointX="3" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FiltroSeguridadModel.Persona" Width="1.5" PointX="6" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FiltroSeguridadModel.Role" Width="1.5" PointX="1.5" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="FiltroSeguridadModel.Status" Width="1.5" PointX="0.75" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="FiltroSeguridadModel.Usuario" Width="1.5" PointX="3.75" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="FiltroSeguridadModel.UsuariosInscritos" Width="1.5" PointX="8.25" PointY="4" IsExpanded="true" />
+        <AssociationConnector Association="FiltroSeguridadModel.FK__Cursos__Categori__3B75D760" ManuallyRouted="false" />
+        <AssociationConnector Association="FiltroSeguridadModel.FK__Cursos__AutorId__44FF419A" ManuallyRouted="false" />
+        <AssociationConnector Association="FiltroSeguridadModel.FK__Cursos__StatusId__3C69FB99" ManuallyRouted="false" />
+        <AssociationConnector Association="FiltroSeguridadModel.FK__UsuariosI__Curso__440B1D61" ManuallyRouted="false" />
+        <AssociationConnector Association="FiltroSeguridadModel.FK__Persona__StatusI__3F466844" ManuallyRouted="false" />
+        <AssociationConnector Association="FiltroSeguridadModel.FK__Persona__Usuario__403A8C7D" ManuallyRouted="false" />
+        <AssociationConnector Association="FiltroSeguridadModel.FK__UsuariosI__Perso__4316F928" ManuallyRouted="false" />
+        <AssociationConnector Association="FiltroSeguridadModel.FK__Usuario__RoleId__276EDEB3" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

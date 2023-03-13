@@ -1,0 +1,67 @@
+﻿@model Filtros_y_Seguridad.Models.Role
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+<div class="page-content">
+    <div class="container-fluid">
+        <header class="section-header">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>Eliminar Curso</h3>
+                        <ol class="breadcrumb breadcrumb-simple">
+                            <li><a href="https://localhost:44347/Roles/Index">Inicio</a></li> |
+                            <li class="active">Eliminar Rol</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="box-typical box-typical-padding">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">¿Estás seguro de eliminar la información del curso?</h5>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4">
+                                    @Html.DisplayNameFor(model => model.Nombre)
+                                </dt>
+                                <dd class="col-sm-8">
+                                    @Html.DisplayFor(model => model.Nombre)
+                                </dd>
+
+                                <dt class="col-sm-4">
+                                    @Html.DisplayNameFor(model => model.Descripcion)
+                                </dt>
+                                <dd class="col-sm-8">
+                                    @Html.DisplayFor(model => model.Descripcion)
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            @using (Html.BeginForm())
+                            {
+                                @Html.AntiForgeryToken()
+
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-danger mr-2">Eliminar</button>
+                                    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary" })
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

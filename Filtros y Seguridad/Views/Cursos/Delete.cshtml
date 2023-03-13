@@ -1,0 +1,124 @@
+﻿@model Filtros_y_Seguridad.Models.Cursos
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/starrr.js"></script>
+<link href="~/Content/starrr.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link href="https://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
+<script>
+    const cargarRanking = (id, rating) => {
+        $(`#${id}`).starrr({
+            rating
+        });
+    }
+</script>
+<div class="page-content">
+    <div class="container-fluid">
+        <header class="section-header">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>Eliminar Curso</h3>
+                        <ol class="breadcrumb breadcrumb-simple">
+                            <li><a href="https://localhost:44347/Cursos/Index">Inicio</a></li> |
+                            <li class="active">Eliminar Curso</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="box-typical box-typical-padding">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">¿Estás seguro de eliminar la información del curso?</h5>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4">
+                                    @Html.DisplayNameFor(model => model.Nombre)
+                                </dt>
+                                <dd class="col-sm-8">
+                                    @Html.DisplayFor(model => model.Nombre)
+                                </dd>
+
+                                <dt class="col-sm-4">
+                                    @Html.DisplayNameFor(model => model.Descripcion)
+                                </dt>
+                                <dd class="col-sm-8">
+                                    @Html.DisplayFor(model => model.Descripcion)
+                                </dd>
+
+                                <dt class="col-sm-4">
+                                    @Html.DisplayNameFor(model => model.Precio)
+                                </dt>
+                                <dd class="col-sm-8">
+                                    @Html.DisplayFor(model => model.Precio)
+                                </dd>
+
+                                <dt class="col-sm-4">
+                                    @Html.DisplayNameFor(model => model.ImgUrl)
+                                </dt>
+                                <dd class="col-sm-8">
+                                    @Html.DisplayFor(model => model.ImgUrl)
+                                </dd>
+
+                                <dt class="col-sm-4">
+                                    @Html.DisplayNameFor(model => model.Ranking)
+                                </dt>
+                                <dd class="col-sm-8">
+                                    @Html.DisplayFor(model => model.Ranking)
+                                </dd>
+
+                                <dt class="col-sm-4">
+                                    @Html.DisplayNameFor(model => model.Categorias.Nombre)
+                                </dt>
+                                <dd class="col-sm-8">
+                                    @Html.DisplayFor(model => model.Categorias.Nombre)
+                                </dd>
+
+                                <dt class="col-sm-4">
+                                    @Html.DisplayNameFor(model => model.Persona.Nombre)
+                                </dt>
+                                <dd class="col-sm-8">
+                                    @Html.DisplayFor(model => model.Persona.Nombre)
+                                </dd>
+
+                                <dt class="col-sm-4">
+                                    @Html.DisplayNameFor(model => model.Status.Nombre)
+                                </dt>
+                                <dd class="col-sm-8">
+                                    @Html.DisplayFor(model => model.Status.Nombre)
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            @using (Html.BeginForm())
+                            {
+                                @Html.AntiForgeryToken()
+
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-danger mr-2">Eliminar</button>
+                                    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary" })
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

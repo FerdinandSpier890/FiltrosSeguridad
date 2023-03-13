@@ -1,0 +1,194 @@
+﻿@model Filtros_y_Seguridad.Models.Usuario
+@{
+    ViewBag.Title = "Registro";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link href="https://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
+<h2>Registro</h2>
+<script>
+    const validarFormulario = () => {
+        const NombreUsuario = document.getElementById("NombreUsuario").value;
+        const Password = document.getElementById("Password").value;
+        const RolId = document.getElementById("RoleId").value;
+
+        if (NombreUsuario == "") {
+            Swal.fire({
+                title: 'Error',
+                text: 'El Campo Nombre de Usuario no debe de estar Vacio, Vuele a Intentarlo',
+                item: 'error'
+            });
+            return false;
+        }
+
+        if (Password == "") {
+            Swal.fire({
+                title: 'Error',
+                text: 'El Campo Contraseña no debe de estar Vacio, Vuele a Intentarlo',
+                item: 'error'
+            });
+            return false;
+        }
+
+        if (RolId == null) {
+            Swal.fire({
+                title: 'Error',
+                text: 'El Campo Rol no debe de estar Vacio, Vuele a Intentarlo',
+                item: 'error'
+            });
+            return false;
+        }
+        return true;
+    }
+</script>
+<div class="container login-container">
+    <div class="row">
+        <div class="col-md-6 ads">
+            <h1><span id="fl">Registro</span> de <span id="sl">Usuarios</span></h1>
+        </div>
+        <div class="col-md-6 login-form">
+            <div class="profile-img">
+                <img src="https://imgs.search.brave.com/LQFQKBiFX2L399CrvA6reFXuNPvHHkSSGWExjmDrb5c/rs:fit:980:980:1/g:ce/aHR0cHM6Ly9waWMu/b25saW5ld2ViZm9u/dHMuY29tL3N2Zy9p/bWdfMjQ3ODcucG5n" alt="profile_img" height="140px" width="140px;">
+            </div>
+            <h3>Login</h3>
+            <div class="col-md-12 login-form">
+                <form>
+                    <div class="form-group">
+                        <label for="NombreUsuario">Nombre de usuario:</label>
+                        <input type="text" class="form-control" id="NombreUsuario" placeholder="Ingrese su nombre de usuario" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Password">Contraseña:</label>
+                        <input type="password" class="form-control" id="Password" placeholder="Ingrese su contraseña" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="RoleId">Rol:</label>
+                        <select class="form-control" id="RoleId">
+                            @foreach (var rol in ViewBag.Roles)
+                            {
+                                <option value="@rol.Id">@rol.Nombre</option>
+                            }
+                        </select>
+                    </div>
+                    <button onclick="guardarUsuario();" class="btn btn-primary">Registrarse</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .login-container {
+        margin-top: 10%;
+        border: 1px solid #CCD1D1;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        max-width: 50%;
+    }
+
+    .ads {
+        background-color: #A569BD;
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+        color: #fff;
+        padding: 15px;
+        text-align: center;
+    }
+
+        .ads h1 {
+            margin-top: 20%;
+        }
+
+    #fl {
+        font-weight: 600;
+    }
+
+    #sl {
+        font-weight: 100 !important;
+    }
+
+    .profile-img {
+        text-align: center;
+    }
+
+        .profile-img img {
+            border-radius: 50%;
+            /* animation: mymove 2s infinite; */
+        }
+
+
+    .login-form {
+        padding: 15px;
+    }
+
+        .login-form h3 {
+            text-align: center;
+            padding-top: 15px;
+            padding-bottom: 15px;
+        }
+
+    .form-control {
+        font-size: 14px;
+    }
+
+    .forget-password a {
+        font-weight: 500;
+        text-decoration: none;
+        font-size: 14px;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("Index", "Roles")',
+            dataType: 'json',
+            success: function (data) {
+                var options = '';
+                for (var i = 0; i < data.length; i++) {
+                    options += '<option value="' + data[i].Id + '">' + data[i].Nombre + '</option>';
+                }
+                $('#RoleId').append(options);
+            }
+        });
+    });
+
+    const guardarUsuario = () => {
+        var requestData = {
+            NombreUsuario: $('#NombreUsuario').val(),
+            Password: $('#Password').val(),
+            RoleId: $('#RoleId').val(),
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "https://localhost:44347/Account/Registro",
+            data: requestData,
+            success: function (data) {
+                if (requestData == null) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Los Campos no deben de estar Vacios, Vuele a Intentarlo',
+                        item: 'error'
+                    });
+                    return false;
+                }
+                Swal.fire({
+                    title: 'Usuario Registrado',
+                    text: 'El Usuario se Registró Correctamente',
+                    icon: 'success'
+                });
+            },
+            error: function (error) {
+            }
+        });
+
+    }
+</script>
